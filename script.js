@@ -324,7 +324,7 @@ function updateResearchUI() {
         steelButton.disabled = false;
 
         steelButton.textContent =
-            "Buy — $150";
+            "Buy";
 
 
         document
