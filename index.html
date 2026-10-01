@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Factory Tycoon</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header>
+        <h1>🏭 Factory Tycoon</h1>
+        <div class="money">
+            💰 $<span id="money">100</span>
+        </div>
+    </header>
+
+
+    <!-- MAIN GAME -->
+    <div class="game">
+
+        <!-- SIDEBAR -->
+        <nav class="sidebar">
+
+            <button class="tab-button active" onclick="openTab('machines')">
+                🏭 Machines
+            </button>
+
+            <button class="tab-button" onclick="openTab('resources')">
+                📦 Resources
+            </button>
+
+            <button class="tab-button" onclick="openTab('sell')">
+                💰 Sell
+            </button>
+
+            <button class="tab-button" onclick="openTab('research')">
+                🔬 Research
+            </button>
+
+        </nav>
+
+
+        <!-- CONTENT -->
+        <main class="content">
+
+            <!-- MACHINES TAB -->
+            <section id="machines" class="tab active">
+
+                <h2>🏭 Machines</h2>
+
+                <div class="machine">
+
+                    <div>
+                        <h3>⛏️ Iron Miner</h3>
+
+                        <p>
+                            Owned:
+                            <span id="miners">0</span>
+                        </p>
+
+                        <p>
+                            Production:
+                            <strong id="ironProduction">0 Iron / 3 sec</strong>
+                        </p>
+
+                        <p>
+                            Cost:
+                            <strong>$50</strong>
+                        </p>
+                    </div>
+
+                    <button onclick="buyMiner()">
+                        Buy
+                    </button>
+
+                </div>
+
+
+                <div class="machine">
+
+                    <div>
+                        <h3>🪨 Coal Miner</h3>
+
+                        <p>
+                            Owned:
+                            <span id="coalMiners">0</span>
+                        </p>
+
+                        <p>
+                            Production:
+                            <strong id="coalProduction">0 Coal / 3 sec</strong>
+                        </p>
+
+                        <p> 
+                            Cost:
+                            <strong>$75</strong>
+                        </p>
+                    </div>
+
+                    <button onclick="buyCoalMiner()">
+                        Buy
+                    </button>
+
+                </div>
+
+
+                <div 
+                id="steelFactoryMachine"
+                class="machine locked-machine">
+
+                    <div>
+                        <h3>🔩 Steel Factory</h3>
+
+                        <p>
+                            Owned:
+                            <span id="steelFactories">0</span>
+                        </p>
+
+                        <p>
+                            Production:
+                            <strong id="steelProduction">0 Steel / 3 sec</strong>
+                        </p>
+
+                        <p>
+                            Cost:
+                            <strong>$150</strong>
+                        </p>
+                    </div>
+
+                    <button
+                        id="steelFactoryButton"
+                        onclick="buySteelFactory()"
+                        disabled>
+                        🔒 Research Required
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- RESOURCES TAB -->
+            <section id="resources" class="tab">
+
+                <h2>📦 Resources</h2>
+
+                <div class="resource">
+                    <span>⛏️ Iron</span>
+                    <strong id="iron">0</strong>
+                </div>
+
+                <div class="resource">
+                    <span>🪨 Coal</span>
+                    <strong id="coal">0</strong>
+                </div>
+
+                <div class="resource">
+                    <span>🔩 Steel</span>
+                    <strong id="steel">0</strong>
+                </div>
+
+            </section>
+
+
+            <!-- SELL TAB -->
+            <section id="sell" class="tab">
+
+                <h2>💰 Sell Resources</h2>
+
+                <div class="sell-item">
+
+                    <div>
+                        <h3>⛏️ Iron</h3>
+                        <p>$10 each</p>
+                    </div>
+
+                    <button onclick="sellIron()">
+                        Sell All
+                    </button>
+
+                </div>
+
+
+                <div class="sell-item">
+
+                    <div>
+                        <h3>🪨 Coal</h3>
+                        <p>$15 each</p>
+                    </div>
+
+                    <button onclick="sellCoal()">
+                        Sell All
+                    </button>
+
+                </div>
+
+
+                <div class="sell-item">
+
+                    <div>
+                        <h3>🔩 Steel</h3>
+                        <p>$50 each</p>
+                    </div>
+
+                    <button onclick="sellSteel()">
+                        Sell All
+                    </button>
+
+                </div>
+
+            </section>
+
+
+            <!-- RESEARCH TAB -->
+            <!-- RESEARCH TAB -->
+<section id="research" class="tab">
+
+    <h2>🔬 Research</h2>
+
+    <div class="research-tree">
+
+        <!-- BASIC MINING -->
+        <div class="research-node completed">
+
+            <h3>⛏️ Basic Mining</h3>
+
+            <p>
+                Starting technology.
+            </p>
+
+            <strong>✅ Completed</strong>
+
+        </div>
+
+
+        <div class="research-branch">
+
+            <!-- IMPROVED MINING -->
+            <div class="research-node" id="improvedMiningResearch">
+
+                <h3>⛏️ Improved Mining</h3>
+
+                <p>
+                    Improves your mining technology.
+                </p>
+
+                <p>
+                    Cost: <strong>$250</strong>
+                </p>
+
+                <button onclick="research('improvedMining')">
+                    Research
+                </button>
+
+            </div>
+
+
+            <!-- BASIC METALLURGY -->
+            <div class="research-node" id="basicMetallurgyResearch">
+
+                <h3>🔩 Basic Metallurgy</h3>
+
+                <p>
+                    Unlocks the Steel Factory.
+                </p>
+
+                <p>
+                    Cost: <strong>$500</strong>
+                </p>
+
+                <button onclick="research('basicMetallurgy')">
+                    Research
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- ADVANCED MANUFACTURING -->
+        <div class="research-node locked-research"
+             id="advancedManufacturingResearch">
+
+            <h3>⚙️ Advanced Manufacturing</h3>
+
+            <p>
+                Unlocks advanced manufacturing technology.
+            </p>
+
+            <p>
+                Requires: <strong>Basic Metallurgy</strong>
+            </p>
+
+            <p>
+                Cost: <strong>$1,500</strong>
+            </p>
+
+            <button
+                onclick="research('advancedManufacturing')"
+                disabled>
+                🔒 Locked
+            </button>
+
+        </div>
+
+
+        <!-- AUTOMATION -->
+        <div class="research-node locked-research"
+             id="automationResearch">
+
+            <h3>🤖 Automation</h3>
+
+            <p>
+                Unlocks advanced automation systems.
+            </p>
+
+            <p>
+                Requires: <strong>Advanced Manufacturing</strong>
+            </p>
+
+            <p>
+                Cost: <strong>$5,000</strong>
+            </p>
+
+            <button
+                onclick="research('automation')"
+                disabled>
+                🔒 Locked
+            </button>
+
+        </div>
+
+    </div>
+
+</section>
+
+        </main>
+
+    </div>
+
+
+    <!-- FACTORY LOG -->
+    <div class="log">
+        <strong>Factory Log:</strong>
+        <span id="log">Welcome to your factory!</span>
+    </div>
+
+
+    <script src="script.js"></script>
+
+</body>
+</html>
