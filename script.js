@@ -11,6 +11,7 @@ let steel = 0;
 let miners = 0;
 let coalMiners = 0;
 let steelFactories = 0;
+const MAX_MACHINES = 5;
 
 // Research
 let metallurgyResearched = false;
@@ -73,6 +74,24 @@ function updateScreen() {
 
     document.getElementById("steelFactories").textContent = steelFactories;
 
+    let minerBuyButton = document.getElementById("minerBuyButton");
+    minerBuyButton.disabled = miners >= MAX_MACHINES;
+    minerBuyButton.textContent = miners >= MAX_MACHINES ? "Limit Reached" : "Buy";
+    document.getElementById("minerSellButton").disabled = miners === 0;
+
+    let coalMinerBuyButton = document.getElementById("coalMinerBuyButton");
+    coalMinerBuyButton.disabled = coalMiners >= MAX_MACHINES;
+    coalMinerBuyButton.textContent = coalMiners >= MAX_MACHINES ? "Limit Reached" : "Buy";
+    document.getElementById("coalMinerSellButton").disabled = coalMiners === 0;
+
+    let steelFactoryBuyButton = document.getElementById("steelFactoryButton");
+    if (researches.basicMetallurgy.researched) {
+        steelFactoryBuyButton.disabled = steelFactories >= MAX_MACHINES;
+        steelFactoryBuyButton.textContent =
+            steelFactories >= MAX_MACHINES ? "Limit Reached" : "Buy";
+    }
+    document.getElementById("steelFactorySellButton").disabled = steelFactories === 0;
+
 
     // Update production displays
 
@@ -92,6 +111,11 @@ function updateScreen() {
 // ==============================
 
 function buyMiner() {
+
+    if (miners >= MAX_MACHINES) {
+        log("You can only own 5 Iron Miners!");
+        return;
+    }
 
     if (money >= 50) {
 
@@ -115,6 +139,11 @@ function buyMiner() {
 // ==============================
 
 function buyCoalMiner() {
+
+    if (coalMiners >= MAX_MACHINES) {
+        log("You can only own 5 Coal Miners!");
+        return;
+    }
 
     if (money >= 75) {
 
@@ -423,6 +452,11 @@ function buySteelFactory() {
         return;
     }
 
+    if (steelFactories >= MAX_MACHINES) {
+        log("You can only own 5 Steel Factories!");
+        return;
+    }
+
 
     // Check if you have enough money
     if (money >= 150) {
@@ -439,6 +473,45 @@ function buySteelFactory() {
 
         log("Not enough money!");
     }
+}
+
+
+function sellMiner() {
+    if (miners === 0) {
+        log("You don't have any Iron Miners!");
+        return;
+    }
+
+    miners--;
+    money += 25;
+    log("Sold an Iron Miner for $25.");
+    updateScreen();
+}
+
+
+function sellCoalMiner() {
+    if (coalMiners === 0) {
+        log("You don't have any Coal Miners!");
+        return;
+    }
+
+    coalMiners--;
+    money += 37;
+    log("Sold a Coal Miner for $37.");
+    updateScreen();
+}
+
+
+function sellSteelFactory() {
+    if (steelFactories === 0) {
+        log("You don't have any Steel Factories!");
+        return;
+    }
+
+    steelFactories--;
+    money += 75;
+    log("Sold a Steel Factory for $75.");
+    updateScreen();
 }
 
 

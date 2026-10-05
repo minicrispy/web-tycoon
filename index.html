@@ -52,7 +52,7 @@
 
                         <p>
                             Owned:
-                            <span id="miners">0</span>
+                            <span id="miners">0</span> / 5
                         </p>
 
                         <p>
@@ -66,9 +66,10 @@
                         </p>
                     </div>
 
-                    <button onclick="buyMiner()">
-                        Buy
-                    </button>
+                    <div class="machine-actions">
+                        <button id="minerBuyButton" onclick="buyMiner()">Buy</button>
+                        <button id="minerSellButton" onclick="sellMiner()" disabled>Sell ($25)</button>
+                    </div>
 
                 </div>
 
@@ -80,7 +81,7 @@
 
                         <p>
                             Owned:
-                            <span id="coalMiners">0</span>
+                            <span id="coalMiners">0</span> / 5
                         </p>
 
                         <p>
@@ -94,9 +95,10 @@
                         </p>
                     </div>
 
-                    <button onclick="buyCoalMiner()">
-                        Buy
-                    </button>
+                    <div class="machine-actions">
+                        <button id="coalMinerBuyButton" onclick="buyCoalMiner()">Buy</button>
+                        <button id="coalMinerSellButton" onclick="sellCoalMiner()" disabled>Sell ($37)</button>
+                    </div>
 
                 </div>
 
@@ -110,7 +112,7 @@
 
                         <p>
                             Owned:
-                            <span id="steelFactories">0</span>
+                            <span id="steelFactories">0</span> / 5
                         </p>
 
                         <p>
@@ -124,12 +126,15 @@
                         </p>
                     </div>
 
-                    <button
-                        id="steelFactoryButton"
-                        onclick="buySteelFactory()"
-                        disabled>
-                        🔒 Research Required
-                    </button>
+                    <div class="machine-actions">
+                        <button
+                            id="steelFactoryButton"
+                            onclick="buySteelFactory()"
+                            disabled>
+                            🔒 Research Required
+                        </button>
+                        <button id="steelFactorySellButton" onclick="sellSteelFactory()" disabled>Sell ($75)</button>
+                    </div>
 
                 </div>
 

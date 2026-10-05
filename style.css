@@ -130,6 +130,13 @@ header h1 {
     align-items: center;
 }
 
+.machine-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 150px;
+}
+
 .machine h3 {
     margin-top: 0;
 }
