@@ -157,37 +157,29 @@ header h1 {
     margin-bottom: 12px;
 
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
 
     font-size: 20px;
 }
 
-
-/* =========================
-   SELL
-========================= */
-
-.sell-item {
-    background: #1e1e1e;
-
-    border: 1px solid #333;
-    border-radius: 8px;
-
-    padding: 20px;
-    margin-bottom: 15px;
-
+.resource-details {
     display: flex;
     justify-content: space-between;
-    align-items: center;
+    width: 100%;
 }
 
-.sell-item h3 {
+.resource p {
     margin: 0;
+    color: #aaa;
+    font-size: 15px;
 }
 
-.sell-item p {
-    color: #aaa;
-}
+
+/* =========================
+   SELL BUTTONS
+========================= */
 
 
 /* =========================

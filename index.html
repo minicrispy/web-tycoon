@@ -30,10 +30,6 @@
                 📦 Resources
             </button>
 
-            <button class="tab-button" onclick="openTab('sell')">
-                💰 Sell
-            </button>
-
             <button class="tab-button" onclick="openTab('research')">
                 🔬 Research
             </button>
@@ -146,67 +142,30 @@
                 <h2>📦 Resources</h2>
 
                 <div class="resource">
-                    <span>⛏️ Iron</span>
-                    <strong id="iron">0</strong>
+                    <div class="resource-details">
+                        <span>⛏️ Iron</span>
+                        <strong id="iron">0</strong>
+                    </div>
+                    <p>$10 each</p>
+                    <button onclick="sellIron()">Sell All</button>
                 </div>
 
                 <div class="resource">
-                    <span>🪨 Coal</span>
-                    <strong id="coal">0</strong>
+                    <div class="resource-details">
+                        <span>🪨 Coal</span>
+                        <strong id="coal">0</strong>
+                    </div>
+                    <p>$15 each</p>
+                    <button onclick="sellCoal()">Sell All</button>
                 </div>
 
                 <div class="resource">
-                    <span>🔩 Steel</span>
-                    <strong id="steel">0</strong>
-                </div>
-
-            </section>
-
-
-            <!-- SELL TAB -->
-            <section id="sell" class="tab">
-
-                <h2>💰 Sell Resources</h2>
-
-                <div class="sell-item">
-
-                    <div>
-                        <h3>⛏️ Iron</h3>
-                        <p>$10 each</p>
+                    <div class="resource-details">
+                        <span>🔩 Steel</span>
+                        <strong id="steel">0</strong>
                     </div>
-
-                    <button onclick="sellIron()">
-                        Sell All
-                    </button>
-
-                </div>
-
-
-                <div class="sell-item">
-
-                    <div>
-                        <h3>🪨 Coal</h3>
-                        <p>$15 each</p>
-                    </div>
-
-                    <button onclick="sellCoal()">
-                        Sell All
-                    </button>
-
-                </div>
-
-
-                <div class="sell-item">
-
-                    <div>
-                        <h3>🔩 Steel</h3>
-                        <p>$50 each</p>
-                    </div>
-
-                    <button onclick="sellSteel()">
-                        Sell All
-                    </button>
-
+                    <p>$50 each</p>
+                    <button onclick="sellSteel()">Sell All</button>
                 </div>
 
             </section>
