@@ -1058,6 +1058,47 @@ function produce() {
 
 }
 
+// ==============================
+// DEVELOPER MODE
+// ==============================
+
+const DEV_PASSWORD = "ParagonElite";
+
+function unlockDevMode() {
+
+    const password = document.getElementById("devPassword").value;
+
+    if (password === DEV_PASSWORD) {
+
+        document.getElementById("devPanel").style.display = "block";
+
+        log("🛠️ Developer Mode activated!");
+
+    } else {
+
+        log("❌ Incorrect developer password.");
+    }
+}
+
+
+function devGiveMoney() {
+
+    const amount = Number(
+        document.getElementById("devMoneyAmount").value
+    );
+
+    if (amount <= 0 || isNaN(amount)) {
+        log("❌ Enter a valid amount.");
+        return;
+    }
+
+    money += amount;
+
+    updateScreen();
+
+    log(`💰 Developer added $${amount.toLocaleString()}`);
+}
+
 
 // ==============================
 // FACTORY LOG
