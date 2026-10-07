@@ -22,6 +22,8 @@ const BASE_IRON_MINERS = 10;
 const BASE_COAL_MINERS = 5;
 const BASE_STEEL_FACTORIES = 5;
 
+// Developer Mode
+let devMode = false;
 
 // ==============================
 // RESEARCH
@@ -1099,6 +1101,16 @@ function devGiveMoney() {
     log(`💰 Developer added $${amount.toLocaleString()}`);
 }
 
+function unlockDevMode() {
+    const password = prompt("Enter developer password:");
+
+    if (password === "1234") {
+        alert("Developer Mode unlocked!");
+        devMode = true;
+    } else {
+        alert("Incorrect password!");
+    }
+}
 
 // ==============================
 // FACTORY LOG
