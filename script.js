@@ -12,6 +12,7 @@ let miners = 0;
 let coalMiners = 0;
 let steelFactories = 0;
 const MAX_MACHINES = 5;
+const MAX_IRON_MINERS = 10;
 
 // Research
 let metallurgyResearched = false;
@@ -75,8 +76,8 @@ function updateScreen() {
     document.getElementById("steelFactories").textContent = steelFactories;
 
     let minerBuyButton = document.getElementById("minerBuyButton");
-    minerBuyButton.disabled = miners >= MAX_MACHINES;
-    minerBuyButton.textContent = miners >= MAX_MACHINES ? "Limit Reached" : "Buy";
+    minerBuyButton.disabled = miners >= MAX_IRON_MINERS;
+    minerBuyButton.textContent = miners >= MAX_IRON_MINERS ? "Limit Reached" : "Buy";
     document.getElementById("minerSellButton").disabled = miners === 0;
 
     let coalMinerBuyButton = document.getElementById("coalMinerBuyButton");
@@ -112,8 +113,8 @@ function updateScreen() {
 
 function buyMiner() {
 
-    if (miners >= MAX_MACHINES) {
-        log("You can only own 5 Iron Miners!");
+    if (miners >= MAX_IRON_MINERS) {
+        log("You can only own 10 Iron Miners!");
         return;
     }
 
@@ -670,4 +671,4 @@ setInterval(produce, 3000);
 // ==============================
 
 updateScreen();
-updateResearchUI();
+updateResearchUI(); 
