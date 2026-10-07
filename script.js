@@ -1089,4 +1089,3 @@ setInterval(
 updateScreen();
 
 updateResearchUI();
-```
