@@ -8,165 +8,23 @@ let iron = 0;
 let coal = 0;
 let steel = 0;
 
+// Machines
 let miners = 0;
 let coalMiners = 0;
 let steelFactories = 0;
-const MAX_MACHINES = 5;
-const MAX_IRON_MINERS = 10;
 
-// Research
-let metallurgyResearched = false;
+// Prestige
+let prestigeLevel = 0;
+let prestigeRequirement = 10000;
 
-
-// ==============================
-// TAB SYSTEM
-// ==============================
-
-function openTab(tabName) {
-
-    // Hide every tab
-    let tabs = document.querySelectorAll(".tab");
-
-    tabs.forEach(function(tab) {
-        tab.classList.remove("active");
-    });
-
-
-    // Remove active from every button
-    let buttons = document.querySelectorAll(".tab-button");
-
-    buttons.forEach(function(button) {
-        button.classList.remove("active");
-    });
-
-
-    // Show selected tab
-    document.getElementById(tabName).classList.add("active");
-
-
-    // Find the button that opened this tab
-    buttons.forEach(function(button) {
-
-        if (button.getAttribute("onclick") === "openTab('" + tabName + "')") {
-
-            button.classList.add("active");
-        }
-    });
-}
+// Base machine limits
+const BASE_IRON_MINERS = 10;
+const BASE_COAL_MINERS = 5;
+const BASE_STEEL_FACTORIES = 5;
 
 
 // ==============================
-// UPDATE SCREEN
-// ==============================
-
-function updateScreen() {
-
-    document.getElementById("money").textContent = money;
-
-    document.getElementById("iron").textContent = iron;
-
-    document.getElementById("coal").textContent = coal;
-
-    document.getElementById("steel").textContent = steel;
-
-    document.getElementById("miners").textContent = miners;
-
-    document.getElementById("coalMiners").textContent = coalMiners;
-
-    document.getElementById("steelFactories").textContent = steelFactories;
-
-    let minerBuyButton = document.getElementById("minerBuyButton");
-    minerBuyButton.disabled = miners >= MAX_IRON_MINERS;
-    minerBuyButton.textContent = miners >= MAX_IRON_MINERS ? "Limit Reached" : "Buy";
-    document.getElementById("minerSellButton").disabled = miners === 0;
-
-    let coalMinerBuyButton = document.getElementById("coalMinerBuyButton");
-    coalMinerBuyButton.disabled = coalMiners >= MAX_MACHINES;
-    coalMinerBuyButton.textContent = coalMiners >= MAX_MACHINES ? "Limit Reached" : "Buy";
-    document.getElementById("coalMinerSellButton").disabled = coalMiners === 0;
-
-    let steelFactoryBuyButton = document.getElementById("steelFactoryButton");
-    if (researches.basicMetallurgy.researched) {
-        steelFactoryBuyButton.disabled = steelFactories >= MAX_MACHINES;
-        steelFactoryBuyButton.textContent =
-            steelFactories >= MAX_MACHINES ? "Limit Reached" : "Buy";
-    }
-    document.getElementById("steelFactorySellButton").disabled = steelFactories === 0;
-
-
-    // Update production displays
-
-    document.getElementById("ironProduction").textContent =
-        miners + " Iron / 3 sec";
-
-    document.getElementById("coalProduction").textContent =
-        coalMiners + " Coal / 3 sec";
-
-    document.getElementById("steelProduction").textContent =
-        steelFactories + " Steel / 3 sec";
-}
-
-
-// ==============================
-// BUY IRON MINER
-// ==============================
-
-function buyMiner() {
-
-    if (miners >= MAX_IRON_MINERS) {
-        log("You can only own 10 Iron Miners!");
-        return;
-    }
-
-    if (money >= 50) {
-
-        money -= 50;
-
-        miners++;
-
-        log("Bought an Iron Miner!");
-
-        updateScreen();
-
-    } else {
-
-        log("Not enough money!");
-    }
-}
-
-
-// ==============================
-// BUY COAL MINER
-// ==============================
-
-function buyCoalMiner() {
-
-    if (coalMiners >= MAX_MACHINES) {
-        log("You can only own 5 Coal Miners!");
-        return;
-    }
-
-    if (money >= 75) {
-
-        money -= 75;
-
-        coalMiners++;
-
-        log("Bought a Coal Miner!");
-
-        updateScreen();
-
-    } else {
-
-        log("Not enough money!");
-    }
-}
-
-
-
-
-// ==============================
-// RESEARCH SYSTEM
+// RESEARCH
 // ==============================
 
 let researches = {
@@ -199,7 +57,394 @@ let researches = {
 
 
 // ==============================
-// CHECK RESEARCH REQUIREMENTS
+// MACHINE LIMITS
+// ==============================
+
+function getMaxIronMiners() {
+
+    return BASE_IRON_MINERS + (prestigeLevel * 5);
+
+}
+
+
+function getMaxCoalMiners() {
+
+    return BASE_COAL_MINERS + (prestigeLevel * 2);
+
+}
+
+
+function getMaxSteelFactories() {
+
+    return BASE_STEEL_FACTORIES + (prestigeLevel * 2);
+
+}
+
+
+// ==============================
+// PRESTIGE REQUIREMENT
+// ==============================
+
+function calculatePrestigeRequirement() {
+
+    return Math.floor(
+        10000 * Math.pow(2.5, prestigeLevel)
+    );
+
+}
+
+
+// ==============================
+// TAB SYSTEM
+// ==============================
+
+function openTab(tabName) {
+
+    // Hide every tab
+    let tabs = document.querySelectorAll(".tab");
+
+    tabs.forEach(function(tab) {
+        tab.classList.remove("active");
+    });
+
+
+    // Remove active from every button
+    let buttons = document.querySelectorAll(".tab-button");
+
+    buttons.forEach(function(button) {
+        button.classList.remove("active");
+    });
+
+
+    // Show selected tab
+    document.getElementById(tabName).classList.add("active");
+
+
+    // Find the button that opened this tab
+    buttons.forEach(function(button) {
+
+        if (
+            button.getAttribute("onclick") ===
+            "openTab('" + tabName + "')"
+        ) {
+
+            button.classList.add("active");
+
+        }
+
+    });
+
+}
+
+
+// ==============================
+// UPDATE SCREEN
+// ==============================
+
+function updateScreen() {
+
+    // Money
+    document.getElementById("money").textContent = money;
+
+    // Resources
+    document.getElementById("iron").textContent = iron;
+    document.getElementById("coal").textContent = coal;
+    document.getElementById("steel").textContent = steel;
+
+    // Machines
+    document.getElementById("miners").textContent = miners;
+    document.getElementById("coalMiners").textContent = coalMiners;
+    document.getElementById("steelFactories").textContent = steelFactories;
+
+
+    // ==============================
+    // IRON MINER BUTTON
+    // ==============================
+
+    let maxIronMiners = getMaxIronMiners();
+
+    let minerBuyButton =
+        document.getElementById("minerBuyButton");
+
+    minerBuyButton.disabled =
+        miners >= maxIronMiners;
+
+    minerBuyButton.textContent =
+        miners >= maxIronMiners
+            ? "Limit Reached"
+            : "Buy";
+
+    document.getElementById("minerSellButton").disabled =
+        miners === 0;
+
+
+    // ==============================
+    // COAL MINER BUTTON
+    // ==============================
+
+    let maxCoalMiners = getMaxCoalMiners();
+
+    let coalMinerBuyButton =
+        document.getElementById("coalMinerBuyButton");
+
+    coalMinerBuyButton.disabled =
+        coalMiners >= maxCoalMiners;
+
+    coalMinerBuyButton.textContent =
+        coalMiners >= maxCoalMiners
+            ? "Limit Reached"
+            : "Buy";
+
+    document.getElementById("coalMinerSellButton").disabled =
+        coalMiners === 0;
+
+
+    // ==============================
+    // STEEL FACTORY BUTTON
+    // ==============================
+
+    let maxSteelFactories = getMaxSteelFactories();
+
+    let steelFactoryBuyButton =
+        document.getElementById("steelFactoryButton");
+
+
+    if (researches.basicMetallurgy.researched) {
+
+        steelFactoryBuyButton.disabled =
+            steelFactories >= maxSteelFactories;
+
+        steelFactoryBuyButton.textContent =
+            steelFactories >= maxSteelFactories
+                ? "Limit Reached"
+                : "Buy";
+
+    }
+
+
+    document.getElementById("steelFactorySellButton").disabled =
+        steelFactories === 0;
+
+
+    // ==============================
+    // PRODUCTION DISPLAYS
+    // ==============================
+
+    document.getElementById("ironProduction").textContent =
+        miners + " Iron / 3 sec";
+
+    document.getElementById("coalProduction").textContent =
+        coalMiners + " Coal / 3 sec";
+
+    document.getElementById("steelProduction").textContent =
+        steelFactories + " Steel / 3 sec";
+
+
+    // ==============================
+    // PRESTIGE UI
+    // ==============================
+
+    updatePrestigeUI();
+
+}
+
+
+// ==============================
+// BUY IRON MINER
+// ==============================
+
+function buyMiner() {
+
+    let maxIronMiners = getMaxIronMiners();
+
+    if (miners >= maxIronMiners) {
+
+        log(
+            "You can only own " +
+            maxIronMiners +
+            " Iron Miners!"
+        );
+
+        return;
+    }
+
+
+    if (money >= 50) {
+
+        money -= 50;
+
+        miners++;
+
+        log("Bought an Iron Miner!");
+
+        updateScreen();
+
+    } else {
+
+        log("Not enough money!");
+
+    }
+
+}
+
+
+// ==============================
+// BUY COAL MINER
+// ==============================
+
+function buyCoalMiner() {
+
+    let maxCoalMiners = getMaxCoalMiners();
+
+    if (coalMiners >= maxCoalMiners) {
+
+        log(
+            "You can only own " +
+            maxCoalMiners +
+            " Coal Miners!"
+        );
+
+        return;
+    }
+
+
+    if (money >= 75) {
+
+        money -= 75;
+
+        coalMiners++;
+
+        log("Bought a Coal Miner!");
+
+        updateScreen();
+
+    } else {
+
+        log("Not enough money!");
+
+    }
+
+}
+
+
+// ==============================
+// BUY STEEL FACTORY
+// ==============================
+
+function buySteelFactory() {
+
+    // Make sure Basic Metallurgy has been researched
+    if (!researches.basicMetallurgy.researched) {
+
+        log("Research Basic Metallurgy first!");
+
+        return;
+    }
+
+
+    let maxSteelFactories = getMaxSteelFactories();
+
+    if (steelFactories >= maxSteelFactories) {
+
+        log(
+            "You can only own " +
+            maxSteelFactories +
+            " Steel Factories!"
+        );
+
+        return;
+    }
+
+
+    // Check money
+    if (money >= 150) {
+
+        money -= 150;
+
+        steelFactories++;
+
+        log("Bought a Steel Factory!");
+
+        updateScreen();
+
+    } else {
+
+        log("Not enough money!");
+
+    }
+
+}
+
+
+// ==============================
+// SELL MACHINES
+// ==============================
+
+function sellMiner() {
+
+    if (miners === 0) {
+
+        log("You don't have any Iron Miners!");
+
+        return;
+    }
+
+
+    miners--;
+
+    money += 25;
+
+    log("Sold an Iron Miner for $25.");
+
+    updateScreen();
+
+}
+
+
+function sellCoalMiner() {
+
+    if (coalMiners === 0) {
+
+        log("You don't have any Coal Miners!");
+
+        return;
+    }
+
+
+    coalMiners--;
+
+    money += 37;
+
+    log("Sold a Coal Miner for $37.");
+
+    updateScreen();
+
+}
+
+
+function sellSteelFactory() {
+
+    if (steelFactories === 0) {
+
+        log("You don't have any Steel Factories!");
+
+        return;
+    }
+
+
+    steelFactories--;
+
+    money += 75;
+
+    log("Sold a Steel Factory for $75.");
+
+    updateScreen();
+
+}
+
+
+// ==============================
+// RESEARCH SYSTEM
 // ==============================
 
 function canResearch(researchName) {
@@ -210,13 +455,16 @@ function canResearch(researchName) {
         return false;
     }
 
+
     if (research.researched) {
         return false;
     }
 
+
     if (money < research.cost) {
         return false;
     }
+
 
     for (let requirement of research.requires) {
 
@@ -226,7 +474,9 @@ function canResearch(researchName) {
 
     }
 
+
     return true;
+
 }
 
 
@@ -236,7 +486,9 @@ function canResearch(researchName) {
 
 function research(researchName) {
 
-    let researchData = researches[researchName];
+    let researchData =
+        researches[researchName];
+
 
     if (!researchData) {
         return;
@@ -290,15 +542,15 @@ function research(researchName) {
     researchData.researched = true;
 
 
-    log(
-        "Research completed!"
-    );
+    log("Research completed!");
 
 
     updateResearchUI();
 
     updateScreen();
+
 }
+
 
 // ==============================
 // UPDATE RESEARCH UI
@@ -306,10 +558,14 @@ function research(researchName) {
 
 function updateResearchUI() {
 
-    // Improved Mining
+    // ==============================
+    // IMPROVED MINING
+    // ==============================
 
     let improvedMining =
-        document.getElementById("improvedMiningResearch");
+        document.getElementById(
+            "improvedMiningResearch"
+        );
 
     let improvedMiningButton =
         improvedMining.querySelector("button");
@@ -327,10 +583,14 @@ function updateResearchUI() {
     }
 
 
-    // Basic Metallurgy
+    // ==============================
+    // BASIC METALLURGY
+    // ==============================
 
     let basicMetallurgy =
-        document.getElementById("basicMetallurgyResearch");
+        document.getElementById(
+            "basicMetallurgyResearch"
+        );
 
     let basicMetallurgyButton =
         basicMetallurgy.querySelector("button");
@@ -347,24 +607,28 @@ function updateResearchUI() {
 
 
         // Unlock Steel Factory
-
         let steelButton =
-            document.getElementById("steelFactoryButton");
+            document.getElementById(
+                "steelFactoryButton"
+            );
 
         steelButton.disabled = false;
 
-        steelButton.textContent =
-            "Buy";
+        steelButton.textContent = "Buy";
 
 
         document
             .getElementById("steelFactoryMachine")
-            .classList.remove("locked-machine");
+            .classList.remove(
+                "locked-machine"
+            );
 
     }
 
 
-    // Advanced Manufacturing
+    // ==============================
+    // ADVANCED MANUFACTURING
+    // ==============================
 
     let advanced =
         document.getElementById(
@@ -401,7 +665,9 @@ function updateResearchUI() {
     }
 
 
-    // Automation
+    // ==============================
+    // AUTOMATION
+    // ==============================
 
     let automation =
         document.getElementById(
@@ -439,82 +705,6 @@ function updateResearchUI() {
 
 }
 
-// ==============================
-// BUY STEEL FACTORY
-// ==============================
-
-function buySteelFactory() {
-
-    // Make sure Basic Metallurgy has been researched
-    if (!researches.basicMetallurgy.researched) {
-
-        log("Research Basic Metallurgy first!");
-
-        return;
-    }
-
-    if (steelFactories >= MAX_MACHINES) {
-        log("You can only own 5 Steel Factories!");
-        return;
-    }
-
-
-    // Check if you have enough money
-    if (money >= 150) {
-
-        money -= 150;
-
-        steelFactories++;
-
-        log("Bought a Steel Factory!");
-
-        updateScreen();
-
-    } else {
-
-        log("Not enough money!");
-    }
-}
-
-
-function sellMiner() {
-    if (miners === 0) {
-        log("You don't have any Iron Miners!");
-        return;
-    }
-
-    miners--;
-    money += 25;
-    log("Sold an Iron Miner for $25.");
-    updateScreen();
-}
-
-
-function sellCoalMiner() {
-    if (coalMiners === 0) {
-        log("You don't have any Coal Miners!");
-        return;
-    }
-
-    coalMiners--;
-    money += 37;
-    log("Sold a Coal Miner for $37.");
-    updateScreen();
-}
-
-
-function sellSteelFactory() {
-    if (steelFactories === 0) {
-        log("You don't have any Steel Factories!");
-        return;
-    }
-
-    steelFactories--;
-    money += 75;
-    log("Sold a Steel Factory for $75.");
-    updateScreen();
-}
-
 
 // ==============================
 // SELL IRON
@@ -530,6 +720,7 @@ function sellIron() {
 
         iron = 0;
 
+
         log(
             "Sold " +
             amount +
@@ -538,12 +729,15 @@ function sellIron() {
             "."
         );
 
+
         updateScreen();
 
     } else {
 
         log("You don't have any Iron!");
+
     }
+
 }
 
 
@@ -561,6 +755,7 @@ function sellCoal() {
 
         coal = 0;
 
+
         log(
             "Sold " +
             amount +
@@ -569,12 +764,15 @@ function sellCoal() {
             "."
         );
 
+
         updateScreen();
 
     } else {
 
         log("You don't have any Coal!");
+
     }
+
 }
 
 
@@ -592,6 +790,7 @@ function sellSteel() {
 
         steel = 0;
 
+
         log(
             "Sold " +
             amount +
@@ -600,12 +799,202 @@ function sellSteel() {
             "."
         );
 
+
         updateScreen();
 
     } else {
 
         log("You don't have any Steel!");
+
     }
+
+}
+
+
+// ==============================
+// PRESTIGE SYSTEM
+// ==============================
+
+function updatePrestigeUI() {
+
+    prestigeRequirement =
+        calculatePrestigeRequirement();
+
+
+    let prestigeLevelElement =
+        document.getElementById(
+            "prestigeLevel"
+        );
+
+    let prestigeRequirementElement =
+        document.getElementById(
+            "prestigeRequirement"
+        );
+
+    let prestigeButton =
+        document.getElementById(
+            "prestigeButton"
+        );
+
+    let nextMachineBonus =
+        document.getElementById(
+            "nextMachineBonus"
+        );
+
+    let prestigeUnlock =
+        document.getElementById(
+            "prestigeUnlock"
+        );
+
+
+    // Update prestige level
+    if (prestigeLevelElement) {
+
+        prestigeLevelElement.textContent =
+            prestigeLevel;
+
+    }
+
+
+    // Update requirement
+    if (prestigeRequirementElement) {
+
+        prestigeRequirementElement.textContent =
+            prestigeRequirement.toLocaleString();
+
+    }
+
+
+    // Update prestige button
+    if (prestigeButton) {
+
+        prestigeButton.disabled =
+            money < prestigeRequirement;
+
+    }
+
+
+    // ==============================
+    // MACHINE BONUS
+    // ==============================
+
+    if (nextMachineBonus) {
+
+        nextMachineBonus.textContent =
+            "+5 Iron Miners, " +
+            "+2 Coal Miners, " +
+            "+2 Steel Factories";
+
+    }
+
+
+    // ==============================
+    // GLASSMAKING UNLOCK
+    // ==============================
+
+    if (prestigeUnlock) {
+
+        if (prestigeLevel >= 1) {
+
+            prestigeUnlock.textContent =
+                "🪟 Glassmaking unlocked!";
+
+        } else {
+
+            prestigeUnlock.textContent =
+                "🔒 Glassmaking unlocks at Prestige 1.";
+
+        }
+
+    }
+
+}
+
+
+// ==============================
+// PRESTIGE
+// ==============================
+
+function prestige() {
+
+    prestigeRequirement =
+        calculatePrestigeRequirement();
+
+
+    // Make sure the player can prestige
+    if (money < prestigeRequirement) {
+
+        log(
+            "You need $" +
+            prestigeRequirement.toLocaleString() +
+            " to Prestige!"
+        );
+
+        return;
+    }
+
+
+    // ==============================
+    // INCREASE PRESTIGE
+    // ==============================
+
+    prestigeLevel++;
+
+
+    // Calculate new requirement
+    prestigeRequirement =
+        calculatePrestigeRequirement();
+
+
+    // ==============================
+    // RESET MONEY
+    // ==============================
+
+    money = 100;
+
+
+    // ==============================
+    // RESET RESOURCES
+    // ==============================
+
+    iron = 0;
+    coal = 0;
+    steel = 0;
+
+
+    // ==============================
+    // RESET MACHINES
+    // ==============================
+
+    miners = 0;
+    coalMiners = 0;
+    steelFactories = 0;
+
+
+    // ==============================
+    // RESEARCH STAYS
+    // ==============================
+
+    // Nothing happens to researches.
+    // Research is permanently kept.
+
+
+    // ==============================
+    // LOG
+    // ==============================
+
+    log(
+        "⭐ Prestige " +
+        prestigeLevel +
+        " complete! Your factory has been reset."
+    );
+
+
+    // Update everything
+    updateScreen();
+
+    updateResearchUI();
+
 }
 
 
@@ -615,37 +1004,58 @@ function sellSteel() {
 
 function produce() {
 
-    // Iron production
+    // ==============================
+    // IRON PRODUCTION
+    // ==============================
+
     if (miners > 0) {
 
         iron += miners;
+
     }
 
 
-    // Coal production
+    // ==============================
+    // COAL PRODUCTION
+    // ==============================
+
     if (coalMiners > 0) {
 
         coal += coalMiners;
+
     }
 
 
-    // Steel production
-    for (let i = 0; i < steelFactories; i++) {
+    // ==============================
+    // STEEL PRODUCTION
+    // ==============================
+
+    for (
+        let i = 0;
+        i < steelFactories;
+        i++
+    ) {
 
         // 2 Iron + 1 Coal = 1 Steel
 
-        if (iron >= 2 && coal >= 1) {
+        if (
+            iron >= 2 &&
+            coal >= 1
+        ) {
 
             iron -= 2;
 
             coal -= 1;
 
             steel++;
+
         }
+
     }
 
 
     updateScreen();
+
 }
 
 
@@ -655,7 +1065,10 @@ function produce() {
 
 function log(message) {
 
-    document.getElementById("log").textContent = message;
+    document.getElementById(
+        "log"
+    ).textContent = message;
+
 }
 
 
@@ -663,7 +1076,10 @@ function log(message) {
 // PRODUCTION TIMER
 // ==============================
 
-setInterval(produce, 3000);
+setInterval(
+    produce,
+    3000
+);
 
 
 // ==============================
@@ -671,4 +1087,6 @@ setInterval(produce, 3000);
 // ==============================
 
 updateScreen();
-updateResearchUI(); 
+
+updateResearchUI();
+```

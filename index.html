@@ -34,6 +34,10 @@
                 🔬 Research
             </button>
 
+            <button class="tab-button" onclick="openTab('settings')">
+                ⭐ Prestige
+            </button>
+
         </nav>
 
 
@@ -303,6 +307,54 @@
 
     </div>
 
+<!-- PRESTIGE TAB -->
+<section id="prestige" class="tab">
+
+    <h2>⭐ Prestige</h2>
+
+    <div class="prestige-panel">
+
+        <h3>Reset your factory for permanent progression.</h3>
+
+        <p>
+            Prestiging will reset your money, resources, and machines.
+        </p>
+
+        <p>
+            <strong>Research will NOT be reset.</strong>
+        </p>
+
+        <hr>
+
+        <p>
+            Current Prestige:
+            <strong id="prestigeLevel">0</strong>
+        </p>
+
+        <p>
+            Prestige Requirement:
+            <strong>$<span id="prestigeRequirement">10,000</span></strong>
+        </p>
+
+        <p>
+            Next Prestige:
+            <strong id="nextMachineBonus">+5 Iron Miners, +2 Coal Miners, +2 Steel Factories</strong>
+        </p>
+
+        <p id="prestigeUnlock">
+            🔒 Glassmaking unlocks at Prestige 1.
+        </p>
+
+        <button
+            id="prestigeButton"
+            onclick="prestige()"
+            disabled>
+            ⭐ Prestige
+        </button>
+
+    </div>
+
+</section>
 
     <!-- FACTORY LOG -->
     <div class="log">
