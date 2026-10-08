@@ -142,6 +142,91 @@
 
                 </div>
 
+<!-- SAND MINER -->
+
+<div class="machine">
+
+    <div>
+        <h3>🏖️ Sand Miner</h3>
+
+        <p>
+            Owned:
+            <span id="sandMiners">0</span> / 5
+        </p>
+
+        <p>
+            Production:
+            <strong id="sandProduction">0 Sand / 3 sec</strong>
+        </p>
+
+        <p>
+            Cost:
+            <strong>$100</strong>
+        </p>
+    </div>
+
+    <div class="machine-actions">
+
+        <button
+            id="sandMinerBuyButton"
+            onclick="buySandMiner()">
+            Buy
+        </button>
+
+        <button
+            id="sandMinerSellButton"
+            onclick="sellSandMiner()"
+            disabled>
+            Sell ($50)
+        </button>
+
+    </div>
+
+</div>
+
+
+<!-- SILICA MINER -->
+
+<div class="machine">
+
+    <div>
+        <h3>🧪 Silica Miner</h3>
+
+        <p>
+            Owned:
+            <span id="silicaMiners">0</span> / 5
+        </p>
+
+        <p>
+            Production:
+            <strong id="silicaProduction">0 Silica / 3 sec</strong>
+        </p>
+
+        <p>
+            Cost:
+            <strong>$125</strong>
+        </p>
+    </div>
+
+    <div class="machine-actions">
+
+        <button
+            id="silicaMinerBuyButton"
+            onclick="buySilicaMiner()">
+            Buy
+        </button>
+
+        <button
+            id="silicaMinerSellButton"
+            onclick="sellSilicaMiner()"
+            disabled>
+            Sell ($62)
+        </button>
+
+    </div>
+
+</div>
+
                 <div
     id="glassFactoryMachine"
     class="machine locked-machine">
@@ -222,6 +307,19 @@
                     <p>$50 each</p>
                     <button onclick="sellSteel()">Sell All</button>
                 </div>
+
+                <div class="resource">
+
+       <div class="resource-details">
+         <span>🔮 Glass</span>
+         <strong id="glass">0</strong>
+     </div>
+
+     <p>$100 each</p>
+
+     <button onclick="sellGlass()">Sell All</button>
+
+    </div>
 
             </section>
 
@@ -344,7 +442,7 @@
 
         </div>
 
-        <div> class="research-branch">
+        <div class="research-branch">
 
             <!-- GLASSMAKING -->
             <div class="research-node locked-research"

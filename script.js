@@ -1,3 +1,4 @@
+
 // ==============================
 // GAME DATA
 // ==============================
@@ -11,13 +12,21 @@ let sand = 0;
 let silica = 0;
 let glass = 0;
 
-// Machines
+// ==============================
+// MACHINES
+// ==============================
+
 let miners = 0;
 let coalMiners = 0;
 let steelFactories = 0;
 let glassFactories = 0;
+let sandMiners = 0;
+let silicaMiners = 0;
 
-// Prestige
+// ==============================
+// PRESTIGE
+// ==============================
+
 let prestigeLevel = 0;
 let prestigeRequirement = 10000;
 
@@ -25,12 +34,17 @@ let prestigeRequirement = 10000;
 const BASE_IRON_MINERS = 10;
 const BASE_COAL_MINERS = 5;
 const BASE_STEEL_FACTORIES = 5;
+const BASE_GLASS_FACTORIES = 5;
+const BASE_SAND_MINERS = 10;
+const BASE_SILICA_MINERS = 5;
 
-// Developer Mode
+// ==============================
+// DEVELOPER MODE
+// ==============================
+
 let devMode = false;
 
-//Other
-let glassworkingResearched = false;
+const DEV_PASSWORD = "ParagonElite";
 
 // ==============================
 // RESEARCH
@@ -60,10 +74,15 @@ let researches = {
         researched: false,
         cost: 5000,
         requires: ["advancedManufacturing"]
+    },
+
+    glassmaking: {
+        researched: false,
+        cost: 1000,
+        requires: []
     }
 
 };
-
 
 // ==============================
 // MACHINE LIMITS
@@ -90,6 +109,25 @@ function getMaxSteelFactories() {
 }
 
 
+function getMaxGlassFactories() {
+
+    return BASE_GLASS_FACTORIES;
+
+}
+
+function getMaxSandMiners() {
+
+    return BASE_SAND_MINERS + (prestigeLevel * 2);
+
+}
+
+
+function getMaxSilicaMiners() {
+
+    return BASE_SILICA_MINERS + (prestigeLevel * 2);
+
+}
+
 // ==============================
 // PRESTIGE REQUIREMENT
 // ==============================
@@ -102,34 +140,36 @@ function calculatePrestigeRequirement() {
 
 }
 
-
 // ==============================
 // TAB SYSTEM
 // ==============================
 
 function openTab(tabName) {
 
-    // Hide every tab
     let tabs = document.querySelectorAll(".tab");
 
     tabs.forEach(function(tab) {
+
         tab.classList.remove("active");
+
     });
 
 
-    // Remove active from every button
-    let buttons = document.querySelectorAll(".tab-button");
+    let buttons =
+        document.querySelectorAll(".tab-button");
 
     buttons.forEach(function(button) {
+
         button.classList.remove("active");
+
     });
 
 
-    // Show selected tab
-    document.getElementById(tabName).classList.add("active");
+    document
+        .getElementById(tabName)
+        .classList.add("active");
 
 
-    // Find the button that opened this tab
     buttons.forEach(function(button) {
 
         if (
@@ -145,35 +185,76 @@ function openTab(tabName) {
 
 }
 
-
 // ==============================
 // UPDATE SCREEN
 // ==============================
 
 function updateScreen() {
 
-    // Money
-    document.getElementById("money").textContent = money;
+    // ==============================
+    // MONEY
+    // ==============================
 
-    // Resources
-    document.getElementById("iron").textContent = iron;
-    document.getElementById("coal").textContent = coal;
-    document.getElementById("steel").textContent = steel;
+    document.getElementById("money").textContent =
+        money.toLocaleString();
 
-    // Machines
-    document.getElementById("miners").textContent = miners;
-    document.getElementById("coalMiners").textContent = coalMiners;
-    document.getElementById("steelFactories").textContent = steelFactories;
+
+    // ==============================
+    // RESOURCES
+    // ==============================
+
+    document.getElementById("iron").textContent =
+        iron;
+
+    document.getElementById("coal").textContent =
+        coal;
+
+    document.getElementById("steel").textContent =
+        steel;
+
+    document.getElementById("sand").textContent =
+        sand;
+
+    document.getElementById("silica").textContent =
+        silica;
+
+    document.getElementById("glass").textContent =
+        glass;
+
+    // ==============================
+    // MACHINES
+    // ==============================
+
+    document.getElementById("miners").textContent =
+        miners;
+
+    document.getElementById("sandMiners").textContent =
+        sandMiners;
+
+    document.getElementById("silicaMiners").textContent =
+        silicaMiners;
+
+    document.getElementById("coalMiners").textContent =
+        coalMiners;
+
+    document.getElementById("steelFactories").textContent =
+        steelFactories;
+
+    document.getElementById("glassFactories").textContent =
+        glassFactories;
 
 
     // ==============================
     // IRON MINER BUTTON
     // ==============================
 
-    let maxIronMiners = getMaxIronMiners();
+    let maxIronMiners =
+        getMaxIronMiners();
 
     let minerBuyButton =
-        document.getElementById("minerBuyButton");
+        document.getElementById(
+            "minerBuyButton"
+        );
 
     minerBuyButton.disabled =
         miners >= maxIronMiners;
@@ -183,7 +264,10 @@ function updateScreen() {
             ? "Limit Reached"
             : "Buy";
 
-    document.getElementById("minerSellButton").disabled =
+
+    document.getElementById(
+        "minerSellButton"
+    ).disabled =
         miners === 0;
 
 
@@ -191,10 +275,13 @@ function updateScreen() {
     // COAL MINER BUTTON
     // ==============================
 
-    let maxCoalMiners = getMaxCoalMiners();
+    let maxCoalMiners =
+        getMaxCoalMiners();
 
     let coalMinerBuyButton =
-        document.getElementById("coalMinerBuyButton");
+        document.getElementById(
+            "coalMinerBuyButton"
+        );
 
     coalMinerBuyButton.disabled =
         coalMiners >= maxCoalMiners;
@@ -204,21 +291,81 @@ function updateScreen() {
             ? "Limit Reached"
             : "Buy";
 
-    document.getElementById("coalMinerSellButton").disabled =
+
+    document.getElementById(
+        "coalMinerSellButton"
+    ).disabled =
         coalMiners === 0;
 
+// ==============================
+// SAND MINER BUTTON
+// ==============================
+
+let maxSandMiners =
+    getMaxSandMiners();
+
+let sandMinerBuyButton =
+    document.getElementById(
+        "sandMinerBuyButton"
+    );
+
+sandMinerBuyButton.disabled =
+    sandMiners >= maxSandMiners;
+
+sandMinerBuyButton.textContent =
+    sandMiners >= maxSandMiners
+        ? "Limit Reached"
+        : "Buy";
+
+
+document.getElementById(
+    "sandMinerSellButton"
+).disabled =
+    sandMiners === 0;
+
+
+// ==============================
+// SILICA MINER BUTTON
+// ==============================
+
+let maxSilicaMiners =
+    getMaxSilicaMiners();
+
+let silicaMinerBuyButton =
+    document.getElementById(
+        "silicaMinerBuyButton"
+    );
+
+silicaMinerBuyButton.disabled =
+    silicaMiners >= maxSilicaMiners;
+
+silicaMinerBuyButton.textContent =
+    silicaMiners >= maxSilicaMiners
+        ? "Limit Reached"
+        : "Buy";
+
+
+document.getElementById(
+    "silicaMinerSellButton"
+).disabled =
+    silicaMiners === 0;
 
     // ==============================
     // STEEL FACTORY BUTTON
     // ==============================
 
-    let maxSteelFactories = getMaxSteelFactories();
+    let maxSteelFactories =
+        getMaxSteelFactories();
 
     let steelFactoryBuyButton =
-        document.getElementById("steelFactoryButton");
+        document.getElementById(
+            "steelFactoryButton"
+        );
 
 
-    if (researches.basicMetallurgy.researched) {
+    if (
+        researches.basicMetallurgy.researched
+    ) {
 
         steelFactoryBuyButton.disabled =
             steelFactories >= maxSteelFactories;
@@ -229,34 +376,125 @@ function updateScreen() {
                 : "Buy";
 
     }
+    else {
+
+        steelFactoryBuyButton.disabled = true;
+
+        steelFactoryBuyButton.textContent =
+            "🔒 Research Required";
+
+    }
 
 
-    document.getElementById("steelFactorySellButton").disabled =
+    document.getElementById(
+        "steelFactorySellButton"
+    ).disabled =
         steelFactories === 0;
+
+
+    // ==============================
+    // GLASS FACTORY BUTTON
+    // ==============================
+
+    let maxGlassFactories =
+        getMaxGlassFactories();
+
+    let glassFactoryButton =
+        document.getElementById(
+            "glassFactoryButton"
+        );
+
+    let glassFactoryMachine =
+        document.getElementById(
+            "glassFactoryMachine"
+        );
+
+
+    if (
+        researches.glassmaking.researched
+    ) {
+
+        glassFactoryButton.disabled =
+            glassFactories >= maxGlassFactories;
+
+        glassFactoryButton.textContent =
+            glassFactories >= maxGlassFactories
+                ? "Limit Reached"
+                : "Buy";
+
+        glassFactoryMachine.classList.remove(
+            "locked-machine"
+        );
+
+    }
+    else {
+
+        glassFactoryButton.disabled = true;
+
+        glassFactoryButton.textContent =
+            "🔒 Research Required";
+
+    }
+
+
+    document.getElementById(
+        "glassFactorySellButton"
+    ).disabled =
+        glassFactories === 0;
 
 
     // ==============================
     // PRODUCTION DISPLAYS
     // ==============================
 
-    document.getElementById("ironProduction").textContent =
-        miners + " Iron / 3 sec";
+    document.getElementById(
+        "sandProduction"
+    ).textContent =
+        sandMiners +
+        " Sand / 3 sec";
 
-    document.getElementById("coalProduction").textContent =
-        coalMiners + " Coal / 3 sec";
 
-    document.getElementById("steelProduction").textContent =
-        steelFactories + " Steel / 3 sec";
+    document.getElementById(
+        "silicaProduction"
+    ).textContent =
+        silicaMiners +
+        " Silica / 3 sec";
+    
+    document.getElementById(
+        "ironProduction"
+    ).textContent =
+        miners +
+        " Iron / 3 sec";
+
+
+    document.getElementById(
+        "coalProduction"
+    ).textContent =
+        coalMiners +
+        " Coal / 3 sec";
+
+
+    document.getElementById(
+        "steelProduction"
+    ).textContent =
+        steelFactories +
+        " Steel / 3 sec";
+
+
+    document.getElementById(
+        "glassProduction"
+    ).textContent =
+        glassFactories +
+        " Glass / 5 sec";
 
 
     // ==============================
-    // PRESTIGE UI
+    // PRESTIGE
     // ==============================
 
     updatePrestigeUI();
 
 }
-
 
 // ==============================
 // BUY IRON MINER
@@ -264,7 +502,9 @@ function updateScreen() {
 
 function buyMiner() {
 
-    let maxIronMiners = getMaxIronMiners();
+    let maxIronMiners =
+        getMaxIronMiners();
+
 
     if (miners >= maxIronMiners) {
 
@@ -275,6 +515,7 @@ function buyMiner() {
         );
 
         return;
+
     }
 
 
@@ -284,18 +525,22 @@ function buyMiner() {
 
         miners++;
 
-        log("Bought an Iron Miner!");
+        log(
+            "Bought an Iron Miner!"
+        );
 
         updateScreen();
 
-    } else {
+    }
+    else {
 
-        log("Not enough money!");
+        log(
+            "Not enough money!"
+        );
 
     }
 
 }
-
 
 // ==============================
 // BUY COAL MINER
@@ -303,7 +548,9 @@ function buyMiner() {
 
 function buyCoalMiner() {
 
-    let maxCoalMiners = getMaxCoalMiners();
+    let maxCoalMiners =
+        getMaxCoalMiners();
+
 
     if (coalMiners >= maxCoalMiners) {
 
@@ -314,6 +561,7 @@ function buyCoalMiner() {
         );
 
         return;
+
     }
 
 
@@ -323,18 +571,22 @@ function buyCoalMiner() {
 
         coalMiners++;
 
-        log("Bought a Coal Miner!");
+        log(
+            "Bought a Coal Miner!"
+        );
 
         updateScreen();
 
-    } else {
+    }
+    else {
 
-        log("Not enough money!");
+        log(
+            "Not enough money!"
+        );
 
     }
 
 }
-
 
 // ==============================
 // BUY STEEL FACTORY
@@ -342,18 +594,27 @@ function buyCoalMiner() {
 
 function buySteelFactory() {
 
-    // Make sure Basic Metallurgy has been researched
-    if (!researches.basicMetallurgy.researched) {
+    if (
+        !researches.basicMetallurgy.researched
+    ) {
 
-        log("Research Basic Metallurgy first!");
+        log(
+            "Research Basic Metallurgy first!"
+        );
 
         return;
+
     }
 
 
-    let maxSteelFactories = getMaxSteelFactories();
+    let maxSteelFactories =
+        getMaxSteelFactories();
 
-    if (steelFactories >= maxSteelFactories) {
+
+    if (
+        steelFactories >=
+        maxSteelFactories
+    ) {
 
         log(
             "You can only own " +
@@ -362,42 +623,182 @@ function buySteelFactory() {
         );
 
         return;
+
     }
 
 
-    // Check money
     if (money >= 150) {
 
         money -= 150;
 
         steelFactories++;
 
-        log("Bought a Steel Factory!");
+        log(
+            "Bought a Steel Factory!"
+        );
 
         updateScreen();
 
-    } else {
+    }
+    else {
 
-        log("Not enough money!");
+        log(
+            "Not enough money!"
+        );
 
     }
 
 }
 
-function buyGlassFactory() {
-    if (!glassworkingResearched) {
-        alert("Research Glassworking first!");
+// ==============================
+// BUY SAND MINER
+// ==============================
+
+function buySandMiner() {
+
+    let maxSandMiners =
+        getMaxSandMiners();
+
+    if (sandMiners >= maxSandMiners) {
+
+        log(
+            "You can only own " +
+            maxSandMiners +
+            " Sand Miners!"
+        );
+
         return;
+
     }
 
-    if (money >= 750) {
-        money -= 750;
-        glassFactories++;
+    if (money >= 100) {
+
+        money -= 100;
+
+        sandMiners++;
+
+        log(
+            "Bought a Sand Miner!"
+        );
 
         updateScreen();
-    } else {
-        alert("You need $750.");
+
     }
+    else {
+
+        log(
+            "Not enough money!"
+        );
+
+    }
+
+}
+
+
+// ==============================
+// BUY SILICA MINER
+// ==============================
+
+function buySilicaMiner() {
+
+    let maxSilicaMiners =
+        getMaxSilicaMiners();
+
+    if (silicaMiners >= maxSilicaMiners) {
+
+        log(
+            "You can only own " +
+            maxSilicaMiners +
+            " Silica Miners!"
+        );
+
+        return;
+
+    }
+
+    if (money >= 125) {
+
+        money -= 125;
+
+        silicaMiners++;
+
+        log(
+            "Bought a Silica Miner!"
+        );
+
+        updateScreen();
+
+    }
+    else {
+
+        log(
+            "Not enough money!"
+        );
+
+    }
+
+}
+
+// ==============================
+// BUY GLASS FACTORY
+// ==============================
+
+function buyGlassFactory() {
+
+    if (
+        !researches.glassmaking.researched
+    ) {
+
+        log(
+            "Research Glassmaking first!"
+        );
+
+        return;
+
+    }
+
+
+    let maxGlassFactories =
+        getMaxGlassFactories();
+
+
+    if (
+        glassFactories >=
+        maxGlassFactories
+    ) {
+
+        log(
+            "You can only own " +
+            maxGlassFactories +
+            " Glass Factories!"
+        );
+
+        return;
+
+    }
+
+
+    if (money >= 750) {
+
+        money -= 750;
+
+        glassFactories++;
+
+        log(
+            "Bought a Glass Factory!"
+        );
+
+        updateScreen();
+
+    }
+    else {
+
+        log(
+            "Not enough money!"
+        );
+
+    }
+
 }
 
 // ==============================
@@ -408,9 +809,12 @@ function sellMiner() {
 
     if (miners === 0) {
 
-        log("You don't have any Iron Miners!");
+        log(
+            "You don't have any Iron Miners!"
+        );
 
         return;
+
     }
 
 
@@ -418,7 +822,9 @@ function sellMiner() {
 
     money += 25;
 
-    log("Sold an Iron Miner for $25.");
+    log(
+        "Sold an Iron Miner for $25."
+    );
 
     updateScreen();
 
@@ -429,9 +835,12 @@ function sellCoalMiner() {
 
     if (coalMiners === 0) {
 
-        log("You don't have any Coal Miners!");
+        log(
+            "You don't have any Coal Miners!"
+        );
 
         return;
+
     }
 
 
@@ -439,7 +848,9 @@ function sellCoalMiner() {
 
     money += 37;
 
-    log("Sold a Coal Miner for $37.");
+    log(
+        "Sold a Coal Miner for $37."
+    );
 
     updateScreen();
 
@@ -450,9 +861,12 @@ function sellSteelFactory() {
 
     if (steelFactories === 0) {
 
-        log("You don't have any Steel Factories!");
+        log(
+            "You don't have any Steel Factories!"
+        );
 
         return;
+
     }
 
 
@@ -460,7 +874,63 @@ function sellSteelFactory() {
 
     money += 75;
 
-    log("Sold a Steel Factory for $75.");
+    log(
+        "Sold a Steel Factory for $75."
+    );
+
+    updateScreen();
+
+}
+
+
+function sellGlassFactory() {
+
+    if (glassFactories === 0) {
+
+        log(
+            "You don't have any Glass Factories!"
+        );
+
+        return;
+
+    }
+
+
+    glassFactories--;
+
+    money += 375;
+
+    log(
+        "Sold a Glass Factory for $375."
+    );
+
+    updateScreen();
+
+}
+
+// ==============================
+// SELL SAND MINER
+// ==============================
+
+function sellSandMiner() {
+
+    if (sandMiners === 0) {
+
+        log(
+            "You don't have any Sand Miners!"
+        );
+
+        return;
+
+    }
+
+    sandMiners--;
+
+    money += 50;
+
+    log(
+        "Sold a Sand Miner for $50."
+    );
 
     updateScreen();
 
@@ -468,12 +938,42 @@ function sellSteelFactory() {
 
 
 // ==============================
+// SELL SILICA MINER
+// ==============================
+
+function sellSilicaMiner() {
+
+    if (silicaMiners === 0) {
+
+        log(
+            "You don't have any Silica Miners!"
+        );
+
+        return;
+
+    }
+
+    silicaMiners--;
+
+    money += 62;
+
+    log(
+        "Sold a Silica Miner for $62."
+    );
+
+    updateScreen();
+
+}
+
+// ==============================
 // RESEARCH SYSTEM
 // ==============================
 
 function canResearch(researchName) {
 
-    let research = researches[researchName];
+    let research =
+        researches[researchName];
+
 
     if (!research) {
         return false;
@@ -490,11 +990,30 @@ function canResearch(researchName) {
     }
 
 
-    for (let requirement of research.requires) {
+    for (
+        let requirement of research.requires
+    ) {
 
-        if (!researches[requirement].researched) {
+        if (
+            !researches[
+                requirement
+            ].researched
+        ) {
+
             return false;
+
         }
+
+    }
+
+
+    // Glassmaking requires Prestige 1
+    if (
+        researchName === "glassmaking" &&
+        prestigeLevel < 1
+    ) {
+
+        return false;
 
     }
 
@@ -502,7 +1021,6 @@ function canResearch(researchName) {
     return true;
 
 }
-
 
 // ==============================
 // RESEARCH
@@ -515,23 +1033,55 @@ function research(researchName) {
 
 
     if (!researchData) {
+
+        log(
+            "Research not found!"
+        );
+
         return;
+
     }
 
 
     if (researchData.researched) {
 
-        log("You already researched this!");
+        log(
+            "You already researched this!"
+        );
 
         return;
+
     }
 
 
-    // Check requirements
+    // Glassmaking Prestige requirement
 
-    for (let requirement of researchData.requires) {
+    if (
+        researchName === "glassmaking" &&
+        prestigeLevel < 1
+    ) {
 
-        if (!researches[requirement].researched) {
+        log(
+            "You need Prestige 1 first!"
+        );
+
+        return;
+
+    }
+
+
+    // Other requirements
+
+    for (
+        let requirement of
+        researchData.requires
+    ) {
+
+        if (
+            !researches[
+                requirement
+            ].researched
+        ) {
 
             log(
                 "You need to research " +
@@ -540,6 +1090,7 @@ function research(researchName) {
             );
 
             return;
+
         }
 
     }
@@ -547,7 +1098,9 @@ function research(researchName) {
 
     // Check money
 
-    if (money < researchData.cost) {
+    if (
+        money < researchData.cost
+    ) {
 
         log(
             "You need $" +
@@ -556,17 +1109,20 @@ function research(researchName) {
         );
 
         return;
+
     }
 
 
-    // Pay for research
+    // Pay
 
     money -= researchData.cost;
 
     researchData.researched = true;
 
 
-    log("Research completed!");
+    log(
+        "Research completed!"
+    );
 
 
     updateResearchUI();
@@ -574,7 +1130,6 @@ function research(researchName) {
     updateScreen();
 
 }
-
 
 // ==============================
 // UPDATE RESEARCH UI
@@ -592,17 +1147,24 @@ function updateResearchUI() {
         );
 
     let improvedMiningButton =
-        improvedMining.querySelector("button");
+        improvedMining.querySelector(
+            "button"
+        );
 
 
-    if (researches.improvedMining.researched) {
+    if (
+        researches.improvedMining.researched
+    ) {
 
-        improvedMining.classList.add("researched");
+        improvedMining.classList.add(
+            "researched"
+        );
 
         improvedMiningButton.textContent =
             "✅ Researched";
 
-        improvedMiningButton.disabled = true;
+        improvedMiningButton.disabled =
+            true;
 
     }
 
@@ -617,20 +1179,28 @@ function updateResearchUI() {
         );
 
     let basicMetallurgyButton =
-        basicMetallurgy.querySelector("button");
+        basicMetallurgy.querySelector(
+            "button"
+        );
 
 
-    if (researches.basicMetallurgy.researched) {
+    if (
+        researches.basicMetallurgy.researched
+    ) {
 
-        basicMetallurgy.classList.add("researched");
+        basicMetallurgy.classList.add(
+            "researched"
+        );
 
         basicMetallurgyButton.textContent =
             "✅ Researched";
 
-        basicMetallurgyButton.disabled = true;
+        basicMetallurgyButton.disabled =
+            true;
 
 
         // Unlock Steel Factory
+
         let steelButton =
             document.getElementById(
                 "steelFactoryButton"
@@ -638,11 +1208,14 @@ function updateResearchUI() {
 
         steelButton.disabled = false;
 
-        steelButton.textContent = "Buy";
+        steelButton.textContent =
+            "Buy";
 
 
         document
-            .getElementById("steelFactoryMachine")
+            .getElementById(
+                "steelFactoryMachine"
+            )
             .classList.remove(
                 "locked-machine"
             );
@@ -660,17 +1233,24 @@ function updateResearchUI() {
         );
 
     let advancedButton =
-        advanced.querySelector("button");
+        advanced.querySelector(
+            "button"
+        );
 
 
-    if (researches.advancedManufacturing.researched) {
+    if (
+        researches.advancedManufacturing.researched
+    ) {
 
-        advanced.classList.add("researched");
+        advanced.classList.add(
+            "researched"
+        );
 
         advancedButton.textContent =
             "✅ Researched";
 
-        advancedButton.disabled = true;
+        advancedButton.disabled =
+            true;
 
     }
     else if (
@@ -681,7 +1261,8 @@ function updateResearchUI() {
             "locked-research"
         );
 
-        advancedButton.disabled = false;
+        advancedButton.disabled =
+            false;
 
         advancedButton.textContent =
             "Research — $1,500";
@@ -699,17 +1280,24 @@ function updateResearchUI() {
         );
 
     let automationButton =
-        automation.querySelector("button");
+        automation.querySelector(
+            "button"
+        );
 
 
-    if (researches.automation.researched) {
+    if (
+        researches.automation.researched
+    ) {
 
-        automation.classList.add("researched");
+        automation.classList.add(
+            "researched"
+        );
 
         automationButton.textContent =
             "✅ Researched";
 
-        automationButton.disabled = true;
+        automationButton.disabled =
+            true;
 
     }
     else if (
@@ -720,31 +1308,74 @@ function updateResearchUI() {
             "locked-research"
         );
 
-        automationButton.disabled = false;
+        automationButton.disabled =
+            false;
 
         automationButton.textContent =
             "Research — $5,000";
 
     }
 
-}
 
-function researchGlassworking() {
-    if (glassworkingResearched) {
-        alert("Glassworking is already researched!");
-        return;
+    // ==============================
+    // GLASSMAKING
+    // ==============================
+
+    let glassmaking =
+        document.getElementById(
+            "glassmakingResearch"
+        );
+
+    let glassmakingButton =
+        glassmaking.querySelector(
+            "button"
+        );
+
+
+    if (
+        researches.glassmaking.researched
+    ) {
+
+        glassmaking.classList.remove(
+            "locked-research"
+        );
+
+        glassmaking.classList.add(
+            "researched"
+        );
+
+        glassmakingButton.textContent =
+            "✅ Researched";
+
+        glassmakingButton.disabled =
+            true;
+
+    }
+    else if (
+        prestigeLevel >= 1
+    ) {
+
+        glassmaking.classList.remove(
+            "locked-research"
+        );
+
+        glassmakingButton.disabled =
+            false;
+
+        glassmakingButton.textContent =
+            "Research — $1,000";
+
+    }
+    else {
+
+        glassmakingButton.disabled =
+            true;
+
+        glassmakingButton.textContent =
+            "🔒 Requires Prestige 1";
+
     }
 
-    if (money >= 500) {
-        money -= 500;
-        glassworkingResearched = true;
-
-        alert("Glassworking researched! You can now build Glass Factories.");
-
-        updateScreen();
-    } else {
-        alert("You need $500 to research Glassworking.");
-    }
 }
 
 // ==============================
@@ -773,14 +1404,16 @@ function sellIron() {
 
         updateScreen();
 
-    } else {
+    }
+    else {
 
-        log("You don't have any Iron!");
+        log(
+            "You don't have any Iron!"
+        );
 
     }
 
 }
-
 
 // ==============================
 // SELL COAL
@@ -808,14 +1441,16 @@ function sellCoal() {
 
         updateScreen();
 
-    } else {
+    }
+    else {
 
-        log("You don't have any Coal!");
+        log(
+            "You don't have any Coal!"
+        );
 
     }
 
 }
-
 
 // ==============================
 // SELL STEEL
@@ -843,17 +1478,19 @@ function sellSteel() {
 
         updateScreen();
 
-    } else {
+    }
+    else {
 
-        log("You don't have any Steel!");
+        log(
+            "You don't have any Steel!"
+        );
 
     }
 
 }
 
-
 // ==============================
-// PRESTIGE SYSTEM
+// PRESTIGE UI
 // ==============================
 
 function updatePrestigeUI() {
@@ -888,7 +1525,6 @@ function updatePrestigeUI() {
         );
 
 
-    // Update prestige level
     if (prestigeLevelElement) {
 
         prestigeLevelElement.textContent =
@@ -897,7 +1533,6 @@ function updatePrestigeUI() {
     }
 
 
-    // Update requirement
     if (prestigeRequirementElement) {
 
         prestigeRequirementElement.textContent =
@@ -906,7 +1541,6 @@ function updatePrestigeUI() {
     }
 
 
-    // Update prestige button
     if (prestigeButton) {
 
         prestigeButton.disabled =
@@ -914,10 +1548,6 @@ function updatePrestigeUI() {
 
     }
 
-
-    // ==============================
-    // MACHINE BONUS
-    // ==============================
 
     if (nextMachineBonus) {
 
@@ -929,10 +1559,6 @@ function updatePrestigeUI() {
     }
 
 
-    // ==============================
-    // GLASSMAKING UNLOCK
-    // ==============================
-
     if (prestigeUnlock) {
 
         if (prestigeLevel >= 1) {
@@ -940,7 +1566,8 @@ function updatePrestigeUI() {
             prestigeUnlock.textContent =
                 "🪟 Glassmaking unlocked!";
 
-        } else {
+        }
+        else {
 
             prestigeUnlock.textContent =
                 "🔒 Glassmaking unlocks at Prestige 1.";
@@ -950,7 +1577,6 @@ function updatePrestigeUI() {
     }
 
 }
-
 
 // ==============================
 // PRESTIGE
@@ -962,8 +1588,9 @@ function prestige() {
         calculatePrestigeRequirement();
 
 
-    // Make sure the player can prestige
-    if (money < prestigeRequirement) {
+    if (
+        money < prestigeRequirement
+    ) {
 
         log(
             "You need $" +
@@ -972,57 +1599,44 @@ function prestige() {
         );
 
         return;
+
     }
 
-
-    // ==============================
-    // INCREASE PRESTIGE
-    // ==============================
 
     prestigeLevel++;
 
 
-    // Calculate new requirement
     prestigeRequirement =
         calculatePrestigeRequirement();
 
 
-    // ==============================
-    // RESET MONEY
-    // ==============================
+    // Reset money
 
     money = 100;
 
 
-    // ==============================
-    // RESET RESOURCES
-    // ==============================
+    // Reset resources
 
     iron = 0;
     coal = 0;
     steel = 0;
+    sand = 0;
+    silica = 0;
+    glass = 0;
 
 
-    // ==============================
-    // RESET MACHINES
-    // ==============================
+    // Reset machines
 
     miners = 0;
     coalMiners = 0;
     steelFactories = 0;
+    glassFactories = 0;
+    sandMiners = 0;
+    silicaMiners = 0;
 
 
-    // ==============================
-    // RESEARCH STAYS
-    // ==============================
+    // Research remains permanently unlocked
 
-    // Nothing happens to researches.
-    // Research is permanently kept.
-
-
-    // ==============================
-    // LOG
-    // ==============================
 
     log(
         "⭐ Prestige " +
@@ -1031,13 +1645,11 @@ function prestige() {
     );
 
 
-    // Update everything
     updateScreen();
 
     updateResearchUI();
 
 }
-
 
 // ==============================
 // FACTORY PRODUCTION
@@ -1046,7 +1658,7 @@ function prestige() {
 function produce() {
 
     // ==============================
-    // IRON PRODUCTION
+    // IRON
     // ==============================
 
     if (miners > 0) {
@@ -1057,7 +1669,7 @@ function produce() {
 
 
     // ==============================
-    // COAL PRODUCTION
+    // COAL
     // ==============================
 
     if (coalMiners > 0) {
@@ -1066,9 +1678,30 @@ function produce() {
 
     }
 
+    // ==============================
+    // SAND
+    // ==============================
+
+    if (sandMiners > 0) {
+
+        sand += sandMiners;
+
+    }
+
 
     // ==============================
-    // STEEL PRODUCTION
+    // SILICA
+    // ==============================
+
+    if (silicaMiners > 0) {
+
+        silica += silicaMiners;
+
+    }
+
+
+    // ==============================
+    // STEEL
     // ==============================
 
     for (
@@ -1095,6 +1728,43 @@ function produce() {
     }
 
 
+    // ==============================
+    // GLASS
+    // ==============================
+
+    /*
+        Glass recipe:
+
+        2 Sand + 1 Silica
+        =
+        1 Glass
+
+        Sand and Silica production
+        will be added later.
+    */
+
+    for (
+        let i = 0;
+        i < glassFactories;
+        i++
+    ) {
+
+        if (
+            sand >= 2 &&
+            silica >= 1
+        ) {
+
+            sand -= 2;
+
+            silica -= 1;
+
+            glass++;
+
+        }
+
+    }
+
+
     updateScreen();
 
 }
@@ -1103,52 +1773,75 @@ function produce() {
 // DEVELOPER MODE
 // ==============================
 
-const DEV_PASSWORD = "ParagonElite";
-
 function unlockDevMode() {
 
-    const password = document.getElementById("devPassword").value;
+    const password =
+        document.getElementById(
+            "devPassword"
+        ).value;
 
-    if (password === DEV_PASSWORD) {
 
-        document.getElementById("devPanel").style.display = "block";
+    if (
+        password === DEV_PASSWORD
+    ) {
 
-        log("🛠️ Developer Mode activated!");
+        devMode = true;
 
-    } else {
+        document.getElementById(
+            "devPanel"
+        ).style.display =
+            "block";
 
-        log("❌ Incorrect developer password.");
+        log(
+            "🛠️ Developer Mode activated!"
+        );
+
     }
+    else {
+
+        log(
+            "❌ Incorrect developer password."
+        );
+
+    }
+
 }
 
 
 function devGiveMoney() {
 
-    const amount = Number(
-        document.getElementById("devMoneyAmount").value
-    );
+    const amount =
+        Number(
+            document.getElementById(
+                "devMoneyAmount"
+            ).value
+        );
 
-    if (amount <= 0 || isNaN(amount)) {
-        log("❌ Enter a valid amount.");
+
+    if (
+        amount <= 0 ||
+        isNaN(amount)
+    ) {
+
+        log(
+            "❌ Enter a valid amount."
+        );
+
         return;
+
     }
+
 
     money += amount;
 
+
     updateScreen();
 
-    log(`💰 Developer added $${amount.toLocaleString()}`);
-}
 
-function unlockDevMode() {
-    const password = prompt("Enter developer password:");
+    log(
+        `💰 Developer added $${amount.toLocaleString()}`
+    );
 
-    if (password === "1234") {
-        alert("Developer Mode unlocked!");
-        devMode = true;
-    } else {
-        alert("Incorrect password!");
-    }
 }
 
 // ==============================
@@ -1159,10 +1852,10 @@ function log(message) {
 
     document.getElementById(
         "log"
-    ).textContent = message;
+    ).textContent =
+        message;
 
 }
-
 
 // ==============================
 // PRODUCTION TIMER
@@ -1172,7 +1865,6 @@ setInterval(
     produce,
     3000
 );
-
 
 // ==============================
 // START GAME
