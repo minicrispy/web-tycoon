@@ -7,11 +7,15 @@ let money = 100;
 let iron = 0;
 let coal = 0;
 let steel = 0;
+let sand = 0;
+let silica = 0;
+let glass = 0;
 
 // Machines
 let miners = 0;
 let coalMiners = 0;
 let steelFactories = 0;
+let glassFactories = 0;
 
 // Prestige
 let prestigeLevel = 0;
@@ -24,6 +28,9 @@ const BASE_STEEL_FACTORIES = 5;
 
 // Developer Mode
 let devMode = false;
+
+//Other
+let glassworkingResearched = false;
 
 // ==============================
 // RESEARCH
@@ -377,6 +384,21 @@ function buySteelFactory() {
 
 }
 
+function buyGlassFactory() {
+    if (!glassworkingResearched) {
+        alert("Research Glassworking first!");
+        return;
+    }
+
+    if (money >= 750) {
+        money -= 750;
+        glassFactories++;
+
+        updateScreen();
+    } else {
+        alert("You need $750.");
+    }
+}
 
 // ==============================
 // SELL MACHINES
@@ -707,6 +729,23 @@ function updateResearchUI() {
 
 }
 
+function researchGlassworking() {
+    if (glassworkingResearched) {
+        alert("Glassworking is already researched!");
+        return;
+    }
+
+    if (money >= 500) {
+        money -= 500;
+        glassworkingResearched = true;
+
+        alert("Glassworking researched! You can now build Glass Factories.");
+
+        updateScreen();
+    } else {
+        alert("You need $500 to research Glassworking.");
+    }
+}
 
 // ==============================
 // SELL IRON

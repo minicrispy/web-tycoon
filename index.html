@@ -142,6 +142,14 @@
 
                 </div>
 
+                <div class="machine">
+                    <h3>🔮 Glass Factory</h3>
+                    <p>Turns Sand and Silica into Glass</p>
+                    <p>Recipe: 2 Sand + 1 Silica -> 1 Glass</p>
+                    <p>Production: 1 Glass / 5 sec</p>
+                    <button onlclick="buyGlassFactory()">Buy - $750</button>
+                </div>
+
             </section>
 
 
@@ -180,7 +188,6 @@
             </section>
 
 
-            <!-- RESEARCH TAB -->
             <!-- RESEARCH TAB -->
 <section id="research" class="tab">
 
@@ -299,9 +306,38 @@
 
         </div>
 
+        </div> class="research-branch">
+
+            <!-- GLASSMAKING -->
+            <div class="research-node locked-research"
+                 id="glassmakingResearch">
+
+                <h3>🔮 Glassmaking</h3>
+
+                <p>
+                    Unlocks the ability to make glass.
+                </p>
+
+                <p>
+                    Requires: <strong>Prestige 1</strong>
+                </p>
+
+                <p>
+                    Cost: <strong>$1,000</strong>
+                </p>
+
+                <button
+                    onclick="research('glassmaking')"
+                    disabled>
+                    🔒 Locked
+                </button>
+
+            </div>
+
     </div>
 
 </section>
+
 <!-- PRESTIGE TAB -->
 <section id="prestige" class="tab">
 
