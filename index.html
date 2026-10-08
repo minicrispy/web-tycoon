@@ -142,13 +142,51 @@
 
                 </div>
 
-                <div class="machine">
-                    <h3>🔮 Glass Factory</h3>
-                    <p>Turns Sand and Silica into Glass</p>
-                    <p>Recipe: 2 Sand + 1 Silica -> 1 Glass</p>
-                    <p>Production: 1 Glass / 5 sec</p>
-                    <button onlclick="buyGlassFactory()">Buy - $750</button>
-                </div>
+                <div
+    id="glassFactoryMachine"
+    class="machine locked-machine">
+
+    <div>
+        <h3>🔮 Glass Factory</h3>
+
+        <p>
+            Owned:
+            <span id="glassFactories">0</span> / 5
+        </p>
+
+        <p>
+            Recipe:
+            <strong>2 Sand + 1 Silica → 1 Glass</strong>
+        </p>
+
+        <p>
+            Production:
+            <strong id="glassProduction">0 Glass / 5 sec</strong>
+        </p>
+
+        <p>
+            Cost:
+            <strong>$750</strong>
+        </p>
+    </div>
+
+    <div class="machine-actions">
+        <button
+            id="glassFactoryButton"
+            onclick="buyGlassFactory()"
+            disabled>
+            🔒 Research Required
+        </button>
+
+        <button
+            id="glassFactorySellButton"
+            onclick="sellGlassFactory()"
+            disabled>
+            Sell ($375)
+        </button>
+    </div>
+
+</div>
 
             </section>
 
@@ -306,7 +344,7 @@
 
         </div>
 
-        </div> class="research-branch">
+        <div> class="research-branch">
 
             <!-- GLASSMAKING -->
             <div class="research-node locked-research"
