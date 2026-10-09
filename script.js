@@ -243,6 +243,13 @@ function updateScreen() {
     document.getElementById("glassFactories").textContent =
         glassFactories;
 
+        // Update maximum machine limits
+    document.getElementById("maxMiners").textContent = getMaxIronMiners();
+    document.getElementById("maxCoalMiners").textContent = getMaxCoalMiners();
+    document.getElementById("maxSteelFactories").textContent = getMaxSteelFactories();
+    document.getElementById("maxSandMiners").textContent = getMaxSandMiners();
+    document.getElementById("maxSilicaMiners").textContent = getMaxSilicaMiners();
+    document.getElementById("maxGlassFactories").textContent = getMaxGlassFactories();
 
     // ==============================
     // IRON MINER BUTTON
