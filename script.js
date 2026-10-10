@@ -11,6 +11,7 @@ let steel = 0;
 let sand = 0;
 let silica = 0;
 let glass = 0;
+let gold = 0;
 
 // ==============================
 // MACHINES
@@ -22,6 +23,7 @@ let steelFactories = 0;
 let glassFactories = 0;
 let sandMiners = 0;
 let silicaMiners = 0;
+let goldMiners = 0;
 
 // ==============================
 // PRESTIGE
@@ -37,6 +39,7 @@ const BASE_STEEL_FACTORIES = 5;
 const BASE_GLASS_FACTORIES = 5;
 const BASE_SAND_MINERS = 10;
 const BASE_SILICA_MINERS = 5;
+const BASE_GOLD_MINERS = 2;
 
 // ==============================
 // DEVELOPER MODE
